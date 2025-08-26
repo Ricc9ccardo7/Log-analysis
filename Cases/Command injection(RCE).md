@@ -1,10 +1,12 @@
 
 
-# 
-L’obiettivo di questo esercizio è identificare e ricostruire un tentativo di Remote Code Execution (RCE) sul server web, analizzando i log e correlando gli eventi.
-In particolare, il focus è sull’individuazione dell’iniezione di comandi tramite parametri URL e sulla conferma della loro esecuzione a livello di sistema. 
+## Obiettivo dell’esercizio
+L’obiettivo di questo esercizio è identificare e ricostruire un tentativo di **Remote Code Execution (RCE)** sul server web, analizzando i log e correlando gli eventi.  
+Il focus è sull’individuazione dell’iniezione di comandi tramite parametri URL e sulla conferma della loro esecuzione a livello di sistema.  
 
-(Ref-MITRE ATT&CK: T1059.004 : Command and Scripting Interpreter)
+*(Ref: MITRE ATT&CK — T1059.004: Command and Scripting Interpreter, Unix Shell)* 
+
+##  Log di riferimento
 
 Web Access Logs sample
 ![ ](../image/a1.png)
@@ -12,7 +14,8 @@ Web Access Logs sample
 system and security log sample
 ![ ](../image/a2.png)
 
-#
+## Accesso iniziale
+
 Il mio primo passo è stato cercare nei log di nginx durante il tempo indicato dall’alert. Ho filtrato le richieste GET sospette che contenevano caratteri di shell (;, |, ecc.). La prima voce rilevante era:
 ```
 2025-08-22 06:15:09 WEB01 nginx[2431]: 198.51.100.24 - - [22/Aug/2025:06:15:09 +0000] "GET /product?id=5;uname+-a HTTP/1.1" 200 432 "-" "Mozilla/5.0"
