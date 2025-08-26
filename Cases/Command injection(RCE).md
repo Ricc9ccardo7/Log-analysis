@@ -6,9 +6,9 @@ In particolare, il focus è sull’individuazione dell’iniezione di comandi tr
 
 (Ref-MITRE ATT&CK: T1059.004 : Command and Scripting Interpreter)
 
-[ ](../image/a1.png)
+![ ](../image/a1.png)
 
-[ ](../image/a2.png)
+![ ](../image/a2.png)
 
 Il mio primo passo è stato cercare nei log di nginx durante il tempo indicato dall’allerta. Ho filtrato le richieste GET sospette che contenevano caratteri di shell (;, |, ecc.). La prima voce rilevante era:
 ```
