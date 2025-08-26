@@ -26,7 +26,7 @@ Da lì, il mio compito è tracciare manualmente tutti i movimenti dell’attacca
 
 ##  Obiettivo 
 
-Il focus principale è sulla `**correlazione dei log** `
+Il focus principale è sulla **`correlazione dei log `**
 
 Non mi limito a raccontare cosa è successo, ma spiego come l’ho scoperto.
 
@@ -43,6 +43,6 @@ Lo scopo è mostrare il ragionamento dietro ogni passaggio, non solo il risultat
 ##  Struttura dei File
 
 - `cases/` — Analisi strutturate degli scenari 
-- `logs/` — Contiene i log grezzi usati nei vari casi.
+- `image/` — Contiene screenshoot dei log grezzi usati nei vari casi.
 - `README.md` — Questo file.
 
