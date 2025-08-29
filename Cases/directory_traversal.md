@@ -3,11 +3,13 @@
 
 
 # logs 
-
+Web server logs
 ![Web server logs](../image/2a.png)
 
+Application / Service logs
 ![ Application / Service logs](../image/2b.png)
 
+Security logs
 ![ Security logs](../image/2c.png)
 
 
