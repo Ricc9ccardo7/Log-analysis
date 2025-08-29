@@ -2,11 +2,11 @@
 # Logs
 VPN Gateway, Remote Desktop Gateway (RDG) e Load Balancer (HAProxy) logs
 
-![  ](../image/4a)
+![  ](../image/4a.png)
 
 Windows Security Auditing, Sysmon, MsiInstaller, Windows Update logs
 
-![  ](../image/4b)
+![  ](../image/4b.png)
 
 #
 L’indagine è iniziata con un ticket del SIEM alle 09:41:21. 
