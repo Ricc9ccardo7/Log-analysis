@@ -6,6 +6,8 @@ Network & Endpoint Logs
 
 ![ ](../image/7a.png)
 
+![ ](../image/7b.png)
+
 # Ricognizione
 ```
 └── 11:05:03 PROXY01 ... suspicious GET http://external-storage[.]cc/storage/credentials[.]txt (da 10.20.14.55)
