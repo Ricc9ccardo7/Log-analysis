@@ -5,7 +5,6 @@
 Network & Endpoint Logs
 
 ![ ](../image/7a.png)
-
 ![ ](../image/7b.png)
 
 # Ricognizione
