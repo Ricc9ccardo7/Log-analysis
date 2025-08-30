@@ -12,6 +12,8 @@ Network & Endpoint Logs
 ```
 Alle 11:05:03 il primo passo di ricognizione, un client interno (IP 10.20.14.55) contatta tramite Proxy01 il dominio sospetto external-storage.cc, chiedendo un file chiamato `credentials.txt`. Questo tipo di richiesta serve all’attaccante per verificare se il server C2 è attivo e pronto a ricevere dati. È come un “ping” iniziale per stabilire contatto.
 Subito dopo inizia la vera esfiltrazione dei dati.
+
+# Metodo di Esfiltrazione 1 ( PowerShell HTTP PUT)
 ```
 └── 11:05:25 powershell.exe (User a.wilson, parent=explorer.exe) ... PUT data.zip to external-storage.cc
      └── 11:05:27 FileCreate ... data.zip scritto (SHA256=A3B1C…)
@@ -19,9 +21,12 @@ Subito dopo inizia la vera esfiltrazione dei dati.
      └── 11:05:37 PROXY01 POST ... data.zip 65 KB to external-storage.cc
      └── 11:05:52 cmd.exe cleanup ... cancella data.zip (child of powershell)
 ```
-La prima tecnica avviene con PowerShell.. powershell.exe (PID 6120, utente CORP\a.wilson) prova a caricare un file data.zip verso external-storage.cc con metodo HTTP PUT. Due secondi dopo, Sysmon registra la creazione effettiva del file ZIP, contenente dati interni. Alle 11:05:35 il processo apre una connessione TCP verso `198.51.100.12:80`, e il proxy conferma un upload POST da 65 KB.Infine cmd.exe cancella data.zip
+La prima tecnica di esfiltrazione è stata realizzata con PowerShell, sfruttando la capacità del comando di interagire con server remoti. Alle 11:05:25, powershell.exe (PID 6120, utente CORP\a.wilson, avviato da explorer.exe) ha tentato di caricare un file chiamato `data.zip` sul dominio `external-storage.cc` utilizzando il metodo HTTP PUT. In realtà, in quel preciso istante, il file non esisteva ancora... il comando ha solo avviato il processo di preparazione.
 
-La seconda tecnica sfrutta l’utility di Windows ftp.exe. Alle 11:05:41 il processo parte con parametro -s:ftp_commands.txt, cioè un file di script con comandi predefiniti. Subito dopo richiede accesso a data.zip, e alle 11:05:49 apre una connessione sulla porta 21 (FTP) verso lo stesso dominio esterno. Questo conferma che il file è stato inviato tramite FTP automatizzato.
+Solo due secondi dopo, alle 11:05:27, Sysmon registra la creazione del file data.zip, completo di hash SHA256, segno che i dati interni sono stati raccolti e compressi in un archivio pronto per la trasmissione. Poi, lo stesso processo apre una connessione TCP verso l’indirizzo remoto `198.51.100.12:80`, e poco dopo il proxy aziendale (PROXY01) conferma un’operazione di HTTP POST da 65 KB diretta al dominio esterno. Questo rappresenta l’effettiva uscita dei dati dall’ambiente interno.
+
+Infine, alle 11:05:52, un nuovo processo cmd.exe, generato come figlio di powershell.exe, esegue un comando di eliminazione di data.zip dal disco. Chiaramente è un passo di cleanup, volto a cancellare tracce locali e rendere più difficile l’analisi forense.
+
 
 # Metodo di Esfiltrazione 2  (Client FTP)
 ```
