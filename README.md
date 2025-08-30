@@ -1,11 +1,11 @@
 
-**head note: Questo progetto nasce come compito universitario per la `University of the People`. Attualmente lo sto traducendo dall'inglese all'italiano ...la directory è ancora in fase di completamento.
+**head note: Questo progetto nasce come compito universitario per la `University of the People`. L’elaborato è stato originariamente preparato in inglese e successivamente tradotto in italiano.
 
-# Correlazione Log — Analisi di Incidenti
+# Correlazione Log ( Analisi di Incidenti )
 
 ##  Informazioni sul Progetto
 
-In questo progetto lavoro con un insieme misto di log raccolti da diversi livelli di un ambiente simulato, tra cui:
+In questo progetto lavoro con un insieme misto di log raccolti da diversi livelli di log simulato, tra cui:
 
 - Log del web server 
 - Log del proxy
@@ -30,7 +30,7 @@ Il focus principale è sulla **`correlazione dei log `**
 
 Non mi limito a raccontare cosa è successo, ma spiego come l’ho scoperto.
 
-Invece di usare un linguaggio formale da report professionale, ogni indagine è scritta in stile diario personale Spiego passo per passo:
+Invece di usare una formalità da report professionale, ogni indagine è scritta in stile diario personale. Spiego passo per passo...
 - Cosa cercavo
 - Perché ho controllato certi log
 - Come ho verificato e collegato gli eventi
