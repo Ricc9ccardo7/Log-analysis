@@ -29,7 +29,10 @@ System & Service logs
 └── 12:22:35 FW01 UFW BLOCK ... TCP flood 198.51.100.34 (continuing..)
 ```
 Gli attacchi cominciano in modo evidente alle 12:15:02, quando il firewall principale (FW01) registra il primo log di blocco UFW. In quel momento viene segnalato un pacchetto TCP sospetto proveniente dall’indirizzo IP 198.51.100.34 e diretto al server interno 10.10.5.100 sulla porta 80, cioè la porta standard per il traffico HTTP. Questo evento rappresenta l’inizio di un attacco flood TCP, tipico di un tentativo di Denial of Service.
-Pochi secondi dopo, alle 12:15:07, un altro indirizzo IP, 198.51.100.35, tenta la stessa cosa... un ulteriore flood TCP sempre contro la porta 80 dello stesso server. Quasi in contemporanea, alle 12:15:15, si aggiunge un nuovo tipo di traffico: questa volta l’attacco non è TCP ma UDP, proveniente dall’IP 203.0.113.10. Anche questo viene diretto alla porta 80. La varietà dei protocolli dimostra che l’attaccante non si limita a un solo metodo, ma cerca di sovraccaricare il server utilizzando più tecniche contemporaneamente.
+Pochi secondi dopo, alle 12:15:07, un altro indirizzo IP, 198.51.100.35, tenta la stessa cosa... un ulteriore flood TCP sempre contro la porta 80 dello stesso server. 
+
+Quasi in contemporanea, alle 12:15:15, si aggiunge un nuovo tipo di traffico: questa volta l’attacco non è TCP ma UDP, proveniente dall’IP 203.0.113.10. Anche questo viene diretto alla porta 80. La varietà dei protocolli dimostra che l’attaccante non si limita a un solo metodo, ma cerca di sovraccaricare il server utilizzando più tecniche contemporaneamente.
+
 La situazione peggiora progressivamente. Alle 12:16:03 lo stesso IP 198.51.100.34 torna a colpire con un ulteriore flood TCP, segno che gli attacchi sono continui e ripetuti, non singoli tentativi. Nei minuti seguenti altri indirizzi (198.51.100.36 e 198.51.100.37) compaiono nei log con ulteriori richieste TCP malevole. Questo indica la presenza di più macchine o bot che partecipano a un attacco coordinato.
 Alle 12:18:12 viene rilevato anche traffico ICMP echo (ping flood) dall’IP 203.0.113.11. Qui l’attaccante prova a usare i pacchetti ICMP per intasare il server con richieste di ping continue. Infine, tra le 12:19 e le 12:22, si notano altri pacchetti UDP e TCP provenienti dagli stessi IP, in particolare 198.51.100.34 che ricompare più volte.
 
